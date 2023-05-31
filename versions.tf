@@ -12,8 +12,6 @@ terraform {
     }
   }
 
-  experiments = ["module_variable_optional_attrs"]
-
   provider_meta "google" {
     module_name = "blueprints/terraform/terraform-google-lb/v4.0.1"
   }
