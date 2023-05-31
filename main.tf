@@ -80,7 +80,6 @@ resource "google_compute_firewall" "http_firewall_rule" {
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
   instance_template = google_compute_instance_template.test_template.self_link
-  project = var.project
   region            = var.region
   hostname          = var.network_prefix
   target_size       = 1
