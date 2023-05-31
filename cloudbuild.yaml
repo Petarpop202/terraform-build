@@ -1,19 +1,26 @@
 steps:
-  - name: 'hashicorp/terraform:latest'
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y wget unzip
+        wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
+        unzip terraform_0.15.5_linux_amd64.zip
+        mv terraform /usr/local/bin/
+  - name: 'terraform'
     args:
       - 'init'
     dir: '/'
 
-  - name: 'hashicorp/terraform:latest'
+  - name: 'terraform'
     args:
       - 'plan'
-      - '-input=false'
-      - '-out=tfplan'
     dir: '/'
 
-  - name: 'hashicorp/terraform:latest'
+  - name: 'terraform'
     args:
       - 'apply'
       - '-auto-approve'
-      - 'tfplan'
     dir: '/'
+
