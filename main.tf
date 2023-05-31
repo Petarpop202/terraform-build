@@ -102,7 +102,7 @@ module "gce-lb-http" {
   firewall_networks = [var.network_prefix]
 
   backends = {
-    //default = {
+    default = {
 
       description                     = null
       protocol                        = "HTTP"
@@ -158,5 +158,5 @@ module "gce-lb-http" {
         oauth2_client_secret = ""
       }
     }
-  //}
+  }
 }

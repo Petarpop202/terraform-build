@@ -19,4 +19,8 @@ terraform {
   provider_meta "google-beta" {
     module_name = "blueprints/terraform/terraform-google-lb/v4.0.1"
   }
+
+    experiment {
+    name = "module_variable_optional_attrs"
+  }
 }
