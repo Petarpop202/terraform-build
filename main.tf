@@ -4,6 +4,12 @@ provider "google" {
   region      = "us-central1"
 }
 
+provider "google-beta" {
+  credentials = file("credentials.json")
+  project     = var.project
+  region      = "us-central1"
+}
+
 # Generating VPC and Subnets
 
 resource "google_compute_network" "vpc-test" {
@@ -77,46 +83,23 @@ resource "google_compute_firewall" "http_firewall_rule" {
   }
 }
 
-# module "mig" {
-#   depends_on    = [google_compute_instance_template.test_template]
-#   source            = "terraform-google-modules/vm/google//modules/mig"
-#   instance_template = google_compute_instance_template.test_template.id
-#   region            = var.region
-#   hostname          = var.network_prefix
-#   target_size       = 1
-#   named_ports = [{
-#     name = "http",
-#     port = 3000
-#     },
-#     {
-#       name = "http",
-#       port = 3001
-#     }
-#   ]
-# }
-
-
-
-resource "google_compute_instance_group_manager" "test_instance_group" {
-  depends_on          = [google_compute_network.vpc-test, google_compute_instance_template.test_template]
-  name                = "test-instance-group"
-  zone                = "us-central1-a"
-  base_instance_name  = "test-instance"
-  target_size         = 1
-
-  named_port {
-    name = "http"
+module "mig" {
+  depends_on    = [google_compute_instance_template.test_template]
+  source            = "terraform-google-modules/vm/google//modules/mig"
+  version           = "~> 7.9"
+  instance_template = google_compute_instance_template.test_template.id
+  region            = var.region
+  hostname          = var.network_prefix
+  target_size       = 1
+  named_ports = [{
+    name = "http",
     port = 3000
-  }
-
-  named_port {
-    name = "http"
-    port = 3001
-  }
-
-  version {
-    instance_template = google_compute_instance_template.test_template.id
-  }
+    },
+    {
+      name = "http",
+      port = 3001
+    }
+  ]
 }
 
 
@@ -165,7 +148,7 @@ module "gce-lb-http" {
 
       groups = [
         {
-          group                        = google_compute_instance_group_manager.test_instance_group
+          group                        = module.mig.instance_group
           balancing_mode               = null
           capacity_scaler              = null
           description                  = null
