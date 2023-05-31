@@ -4,7 +4,6 @@ provider "google" {
   region      = "us-central1"
 }
 
-
 # Generating VPC and Subnets
 
 resource "google_compute_network" "vpc-test" {
