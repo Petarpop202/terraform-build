@@ -1,0 +1,19 @@
+steps:
+  - name: 'hashicorp/terraform:latest'
+    args:
+      - 'init'
+    dir: '/'
+
+  - name: 'hashicorp/terraform:latest'
+    args:
+      - 'plan'
+      - '-input=false'
+      - '-out=tfplan'
+    dir: '/'
+
+  - name: 'hashicorp/terraform:latest'
+    args:
+      - 'apply'
+      - '-auto-approve'
+      - 'tfplan'
+    dir: '/'
