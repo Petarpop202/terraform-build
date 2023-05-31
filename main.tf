@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = file("credentials.json")
+  //credentials = file("credentials.json")
   project     = "cloud-internship-petar"
   region      = "us-central1"
 }
