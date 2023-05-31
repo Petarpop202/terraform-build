@@ -1,3 +1,7 @@
+options:
+  env:
+    - 'module_variable_optional_attrs'
+
 steps:
   - id: 'tf-init'
     name: 'hashicorp/terraform:1.0.0'
