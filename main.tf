@@ -83,7 +83,6 @@ module "mig" {
   region            = var.region
   hostname          = var.network_prefix
   target_size       = 1
-  project = var.project
   named_ports = [{
     name = "http",
     port = 3000
