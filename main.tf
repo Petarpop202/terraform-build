@@ -1,6 +1,6 @@
 provider "google" {
   credentials = file("credentials.json")
-  project     = "cloud-internship-petar"
+  project     = var.project
   region      = "us-central1"
 }
 
@@ -83,6 +83,7 @@ module "mig" {
   region            = var.region
   hostname          = var.network_prefix
   target_size       = 1
+  project = var.project
   named_ports = [{
     name = "http",
     port = 3000
