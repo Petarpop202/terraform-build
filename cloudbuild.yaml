@@ -23,6 +23,3 @@ steps:
       - |   
           terraform apply -auto-approve
 
-options:
-  env:
-    - 'TF_CLI_ARGS=-var experiments=module_variable_optional_attrs'

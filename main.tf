@@ -160,6 +160,7 @@ module "gce-lb-http" {
         oauth2_client_id     = ""
         oauth2_client_secret = ""
       }
+      experiments = ["module_variable_optional_attrs"]
     }
   }
 }
