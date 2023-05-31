@@ -77,23 +77,48 @@ resource "google_compute_firewall" "http_firewall_rule" {
   }
 }
 
-module "mig" {
-  depends_on    = [google_compute_instance_template.test_template]
-  source            = "terraform-google-modules/vm/google//modules/mig"
-  instance_template = google_compute_instance_template.test_template.id
-  region            = var.region
-  hostname          = var.network_prefix
-  target_size       = 1
-  named_ports = [{
-    name = "http",
+# module "mig" {
+#   depends_on    = [google_compute_instance_template.test_template]
+#   source            = "terraform-google-modules/vm/google//modules/mig"
+#   instance_template = google_compute_instance_template.test_template.id
+#   region            = var.region
+#   hostname          = var.network_prefix
+#   target_size       = 1
+#   named_ports = [{
+#     name = "http",
+#     port = 3000
+#     },
+#     {
+#       name = "http",
+#       port = 3001
+#     }
+#   ]
+# }
+
+
+
+resource "google_compute_instance_group_manager" "test_instance_group" {
+  depends_on          = [google_compute_network.vpc-test, google_compute_instance_template.test_template]
+  name                = "test-instance-group"
+  zone                = "us-central1-a"
+  base_instance_name  = "test-instance"
+  target_size         = 1
+
+  named_port {
+    name = "http"
     port = 3000
-    },
-    {
-      name = "http",
-      port = 3001
-    }
-  ]
+  }
+
+  named_port {
+    name = "http"
+    port = 3001
+  }
+
+  version {
+    instance_template = google_compute_instance_template.test_template.id
+  }
 }
+
 
 module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google"
@@ -140,7 +165,7 @@ module "gce-lb-http" {
 
       groups = [
         {
-          group                        = module.mig.instance_group
+          group                        = google_compute_instance_group_manager.test_instance_group
           balancing_mode               = null
           capacity_scaler              = null
           description                  = null
