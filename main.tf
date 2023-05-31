@@ -100,6 +100,7 @@ module "gce-lb-http" {
   project = var.project
   target_tags = [var.network_prefix]
   firewall_networks = [var.network_prefix]
+  experiments       = ["module_variable_optional_attrs"]
 
   backends = {
     default = {
