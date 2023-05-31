@@ -126,8 +126,6 @@ module "gce-lb-http" {
         healthy_threshold   = 2
         unhealthy_threshold = 2
         port                = 3000
-        port_specification = "USE_FIXED_PORT"
-        proxy_header       = "NONE"
         request_path       = "/"
         host                = null
         logging             = null
