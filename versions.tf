@@ -8,16 +8,7 @@ terraform {
 
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 3.53.0, < 5.0.0"
+      version = ">= 4.40.0, < 5.0.0"
     }
   }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb/v4.0.1"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb/v4.0.1"
-  }
-
 }
