@@ -9,6 +9,6 @@ variable "region" {
 }
 
 variable "project" {
-  type = string
+  type    = string
   default = "cloud-internship-petar"
 }

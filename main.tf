@@ -7,15 +7,15 @@ provider "google" {
 # Generating VPC and Subnets
 
 resource "google_compute_network" "vpc-test" {
-  name                   = "vpc-test"
+  name                    = "vpc-test"
   auto_create_subnetworks = true
 }
 
 # Firewall for allow-ssh and ports
 resource "google_compute_firewall" "allow_ssh_test" {
-  depends_on   = [google_compute_network.vpc-test]
-  name         = "allow-ssh-test"
-  network      = google_compute_network.vpc-test.id
+  depends_on    = [google_compute_network.vpc-test]
+  name          = "allow-ssh-test"
+  network       = google_compute_network.vpc-test.id
   source_ranges = ["0.0.0.0/0"]
 
   allow {
@@ -25,9 +25,9 @@ resource "google_compute_firewall" "allow_ssh_test" {
 }
 
 resource "google_compute_firewall" "test_firewall_rule" {
-  depends_on   = [google_compute_network.vpc-test]
-  name         = "test-firewall-rule"
-  network      = google_compute_network.vpc-test.id
+  depends_on    = [google_compute_network.vpc-test]
+  name          = "test-firewall-rule"
+  network       = google_compute_network.vpc-test.id
   source_ranges = ["0.0.0.0/0"]
 
   allow {
@@ -66,10 +66,10 @@ SCRIPT
 }
 
 resource "google_compute_firewall" "http_firewall_rule" {
-  depends_on   = [google_compute_network.vpc-test]
-  name         = "allow-http"
-  network      = google_compute_network.vpc-test.id
-  source_tags  = ["http-server"]
+  depends_on  = [google_compute_network.vpc-test]
+  name        = "allow-http"
+  network     = google_compute_network.vpc-test.id
+  source_tags = ["http-server"]
 
   allow {
     protocol = "tcp"
@@ -78,6 +78,7 @@ resource "google_compute_firewall" "http_firewall_rule" {
 }
 
 module "mig" {
+  depends_on    = [google_compute_instance_template.test_template]
   source            = "terraform-google-modules/vm/google//modules/mig"
   instance_template = google_compute_instance_template.test_template.self_link
   region            = var.region
@@ -86,19 +87,19 @@ module "mig" {
   named_ports = [{
     name = "http",
     port = 3000
-  },
-  {
-    name = "http",
-    port = 3001
-  }
+    },
+    {
+      name = "http",
+      port = 3001
+    }
   ]
 }
 
 module "gce-lb-http" {
-  source  = "GoogleCloudPlatform/lb-http/google"
-  name    = "module-load-balancer"
-  project = var.project
-  target_tags = [var.network_prefix]
+  source            = "GoogleCloudPlatform/lb-http/google"
+  name              = "module-load-balancer"
+  project           = var.project
+  target_tags       = [var.network_prefix]
   firewall_networks = [var.network_prefix]
 
   backends = {
@@ -117,18 +118,17 @@ module "gce-lb-http" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
       custom_response_headers         = null
-      
-      compression_mode = null
-      
+      compression_mode                = null
+
       health_check = {
         check_interval_sec  = 10
         timeout_sec         = 5
         healthy_threshold   = 2
         unhealthy_threshold = 2
         port                = 3000
-        port_specification = "USE_FIXED_PORT"
-        proxy_header       = "NONE"
-        request_path       = "/"
+        port_specification  = "USE_FIXED_PORT"
+        proxy_header        = "NONE"
+        request_path        = "/"
         host                = null
         logging             = null
       }
