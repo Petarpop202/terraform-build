@@ -11,6 +11,7 @@ resource "google_compute_network" "vpc-test" {
   auto_create_subnetworks = true
 }
 
+
 # Firewall for allow-ssh and ports
 resource "google_compute_firewall" "allow_ssh_test" {
   depends_on   = [google_compute_network.vpc-test]
