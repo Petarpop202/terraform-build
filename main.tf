@@ -100,9 +100,11 @@ module "gce-lb-http" {
   project = var.project
   target_tags = [var.network_prefix]
   firewall_networks = [var.network_prefix]
+  experiments       = ["module_variable_optional_attrs"]
 
   backends = {
     default = {
+
       description                     = null
       protocol                        = "HTTP"
       port                            = 80
@@ -116,7 +118,9 @@ module "gce-lb-http" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
       custom_response_headers         = null
-
+      
+      compression_mode = null
+      
       health_check = {
         check_interval_sec  = 10
         timeout_sec         = 5
@@ -158,7 +162,4 @@ module "gce-lb-http" {
       }
     }
   }
-
-  experiments = []
 }
-
