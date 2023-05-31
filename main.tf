@@ -96,63 +96,69 @@ module "mig" {
 
 module "gce-lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google"
-  version = "~> 1.1"
-
-  name       = "module-load-balancer"
-  project    = var.project
+  name    = "module-load-balancer"
+  project = var.project
   target_tags = [var.network_prefix]
-  networks   = [google_compute_network.vpc-test.self_link]
+  firewall_networks = [var.network_prefix]
 
-  backend_default = {
-    description                     = null
-    port                            = 80
-    protocol                        = "HTTP"
-    timeout_sec                     = 10
-    connection_draining_timeout_sec = null
-    enable_cdn                      = false
-    custom_request_headers          = null
-    custom_response_headers         = null
-    compression_mode                = null
-    health_check                    = {
-      check_interval_sec  = 10
-      timeout_sec         = 5
-      healthy_threshold   = 2
-      unhealthy_threshold = 2
-      port                = 3000
-      port_specification  = "USE_FIXED_PORT"
-      proxy_header        = "NONE"
-      request_path        = "/"
-      host                = null
-      logging             = null
-    }
-    log_config = {
-      enable      = true
-      sample_rate = 1.0
-    }
-    session_affinity = null
-    affinity_cookie_ttl_sec = null
-    security_policy = null
-    edge_security_policy = null
-    groups = [
-      {
-        group              = module.mig.instance_group
-        max_connections    = null
-        balancing_mode     = null
-        capacity_scaler    = null
-        description        = null
-        max_rate           = null
-        max_utilization    = null
-        max_rate_per_instance = null
-        max_rate_per_endpoint = null
-        max_connections_per_instance = null
-        max_connections_per_endpoint = null
+  backends = {
+    default = {
+
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = 80
+      port_name                       = "http"
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+      edge_security_policy            = null
+      security_policy                 = null
+      session_affinity                = null
+      affinity_cookie_ttl_sec         = null
+      custom_request_headers          = null
+      custom_response_headers         = null
+      
+      compression_mode = null
+      
+      health_check = {
+        check_interval_sec  = 10
+        timeout_sec         = 5
+        healthy_threshold   = 2
+        unhealthy_threshold = 2
+        port                = 3000
+        port_specification = "USE_FIXED_PORT"
+        proxy_header       = "NONE"
+        request_path       = "/"
+        host                = null
+        logging             = null
       }
-    ]
-    iap_config = {
-      enable               = false
-      oauth2_client_id     = ""
-      oauth2_client_secret = ""
+
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
+
+      groups = [
+        {
+          group                        = module.mig.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        }
+      ]
+
+      iap_config = {
+        enable               = false
+        oauth2_client_id     = ""
+        oauth2_client_secret = ""
+      }
     }
   }
 }
-
