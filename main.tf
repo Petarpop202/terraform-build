@@ -92,7 +92,6 @@ module "mig" {
     port = 3001
   }
   ]
-  network = var.network_prefix
 }
 
 module "gce-lb-http" {
