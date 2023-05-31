@@ -1,18 +1,15 @@
 steps:
-  - name: 'terraform'
+  - name: 'hashicorp/terraform:1.0.0'
     args:
-      - 'init'
-    dir: '/'
+      - 'terraform init'
 
-  - name: 'terraform'
+  - name: 'hashicorp/terraform:1.0.0'
     args:
-      - 'plan'
-    dir: '/'
+      - 'terraform plan'
 
-  - name: 'terraform'
+  - name: 'hashicorp/terraform:1.0.0'
     args:
-      - 'apply'
+      - 'terraform apply'
       - '-auto-approve'
-    dir: '/'
 
 
