@@ -11,4 +11,12 @@ terraform {
       version = ">= 4.40.0, < 5.0.0"
     }
   }
+
+  #   Define where to store tfstate 
+  
+    backend "gcs" {
+    bucket         = "cloud-internship-petar_cloudbuild"
+    prefix         = "terraform.tfstate"
+    credentials    = "credentials.json"
+  }
 }
