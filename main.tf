@@ -105,7 +105,7 @@ module "mig" {
 
 module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google"
-  name              = "module-load-balancer"
+  name              = "module-load-balancer1"
   project           = var.project
   target_tags       = [var.network_prefix]
   firewall_networks = [var.network_prefix]

@@ -7,14 +7,6 @@ steps:
       - | 
           terraform init
 
-  - id: 'tf destroy'
-    name: 'hashicorp/terraform'
-    entrypoint: 'sh'
-    args: 
-      - '-c'
-      - | 
-          terraform destroy -auto-approve
-
   - id: 'tf plan'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
